@@ -24,6 +24,21 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ArticleTitle(),
     Component.ContentMeta(),
     Component.TagList(),
+    Component.ConditionalRender({
+      component: Component.RecentNotes({
+        title: "Publicaciones recientes",
+        limit: 5,
+        showTags: true,
+        emptyMessage: "Aún no hay publicaciones. Vuelve pronto para ver novedades.",
+        filter: (file) =>
+          !!file.slug &&
+          file.slug !== "index" &&
+          !file.slug.startsWith("tags/") &&
+          !file.slug.startsWith("folder/") &&
+          !file.slug.startsWith("static/"),
+      }),
+      condition: (page) => page.fileData.slug === "index",
+    }),
   ],
   left: [
     Component.PageTitle(),
