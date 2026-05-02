@@ -24,19 +24,11 @@ export function getAuthors(fileData: QuartzPluginData): string[] {
     return []
   }
 
-  const authorCandidates = [
-    (frontmatter as Record<string, unknown>).author,
-    (frontmatter as Record<string, unknown>).authors,
-  ]
+  const data = frontmatter as Record<string, unknown>
+  const authorNames = normalizeAuthorValue(data.author)
+  const authorsNames = normalizeAuthorValue(data.authors)
 
-  for (const candidate of authorCandidates) {
-    const parsedAuthors = normalizeAuthorValue(candidate)
-    if (parsedAuthors.length > 0) {
-      return parsedAuthors
-    }
-  }
-
-  return []
+  return [...new Set([...authorNames, ...authorsNames])]
 }
 
 export function formatAuthorsLabel(authors: string[], locale: string): string {
