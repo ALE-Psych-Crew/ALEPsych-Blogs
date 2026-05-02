@@ -5,7 +5,7 @@ date: 2026-05-02
 tags:
   - anuncio
   - dev-blog
-author: immalloy
+author: immalloy # GitHub username (used for Explorer avatar)
 ---
 
 # Hello World

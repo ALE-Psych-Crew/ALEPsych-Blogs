@@ -4,9 +4,10 @@ description: "Resumen breve del contenido técnico"
 date: YYYY-MM-DD
 tags:
   - dev-blog
-author:
-  - github-user-1
-  - github-user-2
+author: github-user-1 # Usuario principal de GitHub (avatar en Explorer)
+# authors:            # Opcional: coautores (también usernames de GitHub)
+#   - github-user-2
+#   - github-user-3
 draft: true
 ---
 
