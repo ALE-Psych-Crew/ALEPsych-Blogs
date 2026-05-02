@@ -12,3 +12,42 @@
     }
   }
 }
+
+.meta-authors-with-avatar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.meta-author-avatar,
+.meta-author-avatar-fallback {
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.meta-author-avatar {
+  object-fit: cover;
+  border: 1px solid var(--lightgray);
+}
+
+.meta-author-avatar-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.62rem;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--dark);
+  background: color-mix(in srgb, var(--secondary) 24%, var(--light) 76%);
+  border: 1px solid var(--lightgray);
+}
+
+.meta-author-avatar + .meta-author-avatar-fallback {
+  display: none;
+}
+
+.meta-author-avatar + .meta-author-avatar-fallback.is-visible {
+  display: inline-flex;
+}

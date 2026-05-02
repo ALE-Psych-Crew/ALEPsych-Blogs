@@ -5,7 +5,12 @@ import { classNames } from "../util/lang"
 import { i18n } from "../i18n"
 import { JSX } from "preact"
 import style from "./styles/contentMeta.scss"
-import { formatAuthorsLabel, getAuthors } from "../util/authors"
+import {
+  formatAuthorsLabel,
+  getAuthors,
+  getGitHubUsername,
+  getPrimaryAuthor,
+} from "../util/authors"
 
 interface ContentMetaOptions {
   /**
@@ -18,6 +23,12 @@ interface ContentMetaOptions {
 const defaultOptions: ContentMetaOptions = {
   showReadingTime: true,
   showComma: true,
+}
+
+function getInitial(author?: string | null): string {
+  if (!author) return "?"
+  const trimmed = author.trim()
+  return trimmed.length > 0 ? trimmed[0].toUpperCase() : "?"
 }
 
 export default ((opts?: Partial<ContentMetaOptions>) => {
@@ -36,7 +47,40 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
 
       const authors = getAuthors(fileData)
       if (authors.length > 0) {
-        segments.push(<span>{formatAuthorsLabel(authors, cfg.locale)}</span>)
+        const primaryAuthor = getPrimaryAuthor(authors)
+        const githubUsername = getGitHubUsername(primaryAuthor)
+        const authorLabel = formatAuthorsLabel(authors, cfg.locale)
+
+        segments.push(
+          <span class="meta-authors-with-avatar">
+            {githubUsername ? (
+              <>
+                <img
+                  class="meta-author-avatar"
+                  src={`https://github.com/${githubUsername}.png?size=40`}
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
+                  onError={(event) => {
+                    const image = event.currentTarget as HTMLImageElement
+                    image.style.display = "none"
+                    const fallback = image.nextElementSibling as HTMLElement | null
+                    fallback?.classList.add("is-visible")
+                  }}
+                />
+                <span class="meta-author-avatar-fallback" aria-hidden="true">
+                  {getInitial(primaryAuthor)}
+                </span>
+              </>
+            ) : (
+              <span class="meta-author-avatar-fallback" aria-hidden="true">
+                {getInitial(primaryAuthor)}
+              </span>
+            )}
+            <span>{authorLabel}</span>
+          </span>,
+        )
       }
 
       // Display reading time if enabled

@@ -11,7 +11,7 @@ const PageTitle: QuartzComponent = ({ fileData, cfg, displayClass }: QuartzCompo
       <a href={baseDir} class="page-title-link" aria-label={title}>
         <img
           src={`${baseDir}/static/ale-psych-dev-blog-logo.png`}
-          alt="ALE Psych Dev Blog"
+          alt={title}
           class="page-title-logo"
           loading="eager"
           decoding="async"
@@ -34,7 +34,7 @@ PageTitle.css = `
 }
 
 .page-title-logo {
-  width: clamp(11rem, 15vw, 14rem);
+  width: clamp(12.5rem, 18vw, 16.5rem);
   height: auto;
   display: block;
 }

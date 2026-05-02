@@ -31,6 +31,27 @@ export function getAuthors(fileData: QuartzPluginData): string[] {
   return [...new Set([...authorNames, ...authorsNames])]
 }
 
+export function getPrimaryAuthor(authors: string[]): string | null {
+  return authors.length > 0 ? authors[0] : null
+}
+
+export function getGitHubUsername(author?: string | null): string | null {
+  if (!author) return null
+
+  const normalized = author.trim()
+  if (normalized.length === 0) return null
+
+  const githubUrlMatch = normalized.match(/github\.com\/([A-Za-z0-9-]+)\/?/i)
+  if (githubUrlMatch?.[1]) {
+    return githubUrlMatch[1]
+  }
+
+  const handle = normalized.replace(/^@/, "")
+  if (!/^[A-Za-z0-9-]+$/.test(handle)) return null
+
+  return handle
+}
+
 export function formatAuthorsLabel(authors: string[], locale: string): string {
   if (authors.length === 0) {
     return ""

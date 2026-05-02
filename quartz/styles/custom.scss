@@ -34,12 +34,12 @@ body {
   background: color-mix(in srgb, var(--light) 92%, var(--secondary) 8%);
   border-right: 1px solid var(--lightgray);
   padding-right: 1.3rem;
-  padding-left: 1.3rem;
+  padding-left: 1rem;
 }
 
 .page > #quartz-body .sidebar.right {
   border-left: 1px solid var(--lightgray);
-  padding-left: 1.2rem;
+  padding-left: 1.45rem;
 }
 
 .explorer .folder-icon,
@@ -59,15 +59,25 @@ button.toc-header .fold,
 }
 
 .page-title-logo {
-  max-height: 3rem;
+  max-height: none;
+  filter: none;
 }
 
-:root[saved-theme="dark"] .page-title-logo {
-  filter: brightness(1.05) contrast(1.04);
+@media (min-width: 1200px) {
+  .page > #quartz-body .sidebar.left {
+    margin-left: -0.7rem;
+  }
+
+  .page > #quartz-body .sidebar.right {
+    margin-right: -0.8rem;
+  }
 }
 
-:root[saved-theme="light"] .page-title-logo {
-  filter: saturate(0.92);
+@media (max-width: 1199px) {
+  .page > #quartz-body .sidebar.left,
+  .page > #quartz-body .sidebar.right {
+    margin-inline: 0;
+  }
 }
 
 article {
