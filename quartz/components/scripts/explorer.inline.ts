@@ -19,6 +19,43 @@ type FolderState = {
   collapsed: boolean
 }
 
+function normalizeGitHubUsername(author?: string): string | null {
+  if (!author) return null
+  const trimmed = author.trim().replace(/^@/, "")
+  if (trimmed.length === 0) return null
+
+  const isValidUsername = /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,38})$/.test(trimmed)
+  return isValidUsername ? trimmed : null
+}
+
+function createAuthorAvatar(primaryAuthor?: string): HTMLElement {
+  const avatar = document.createElement("span")
+  avatar.className = "explorer-author-avatar"
+  avatar.setAttribute("aria-hidden", "true")
+
+  const username = normalizeGitHubUsername(primaryAuthor)
+  if (!username) {
+    avatar.classList.add("fallback")
+    avatar.textContent = "•"
+    return avatar
+  }
+
+  const image = document.createElement("img")
+  image.className = "explorer-author-avatar-image"
+  image.src = `https://github.com/${username}.png?size=40`
+  image.alt = ""
+  image.loading = "lazy"
+  image.decoding = "async"
+  image.referrerPolicy = "no-referrer"
+  image.addEventListener("error", () => {
+    avatar.classList.add("fallback")
+    avatar.textContent = "•"
+    image.remove()
+  })
+  avatar.append(image)
+  return avatar
+}
+
 let currentExplorerState: Array<FolderState>
 function toggleExplorer(this: HTMLElement) {
   const nearestExplorer = this.closest(".explorer") as HTMLElement
@@ -86,7 +123,9 @@ function createFileNode(currentSlug: FullSlug, node: FileTrieNode): HTMLLIElemen
   const a = li.querySelector("a") as HTMLAnchorElement
   a.href = resolveRelative(currentSlug, node.slug)
   a.dataset.for = node.slug
-  a.textContent = node.displayName
+
+  const primaryAuthor = node.data?.authors?.[0]
+  a.append(createAuthorAvatar(primaryAuthor), document.createTextNode(node.displayName))
 
   if (currentSlug === node.slug) {
     a.classList.add("active")
