@@ -10,7 +10,6 @@ export const sharedPageComponents: SharedLayout = {
       component: Component.RecentNotes({
         title: "Publicaciones recientes",
         limit: 5,
-        showTags: true,
         emptyMessage: "Aún no hay publicaciones. Vuelve pronto para ver novedades.",
         filter: (file) =>
           !!file.slug &&
@@ -20,6 +19,19 @@ export const sharedPageComponents: SharedLayout = {
           !file.slug.startsWith("static/"),
       }),
       condition: (page) => page.fileData.slug === "index",
+    }),
+    Component.ConditionalRender({
+      component: Component.PostNavigation(),
+      condition: (page) => {
+        const slug = page.fileData.slug
+        return (
+          !!slug &&
+          slug !== "index" &&
+          !slug.startsWith("tags/") &&
+          !slug.startsWith("folder/") &&
+          !slug.startsWith("static/")
+        )
+      },
     }),
   ],
   footer: Component.Footer({
@@ -39,7 +51,6 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.ArticleTitle(),
     Component.ContentMeta(),
-    Component.TagList(),
   ],
   left: [
     Component.PageTitle(),
@@ -57,7 +68,14 @@ export const defaultContentPageLayout: PageLayout = {
     Component.Explorer(),
   ],
   right: [
-    Component.Graph(),
+    Component.Graph({
+      localGraph: {
+        showTags: false,
+      },
+      globalGraph: {
+        showTags: false,
+      },
+    }),
     Component.DesktopOnly(Component.TableOfContents()),
     Component.Backlinks(),
   ],
