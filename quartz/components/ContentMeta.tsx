@@ -27,8 +27,11 @@ const defaultOptions: ContentMetaOptions = {
 
 function getInitial(author?: string | null): string {
   if (!author) return "?"
-  const trimmed = author.trim()
-  return trimmed.length > 0 ? trimmed[0].toUpperCase() : "?"
+
+  const normalized = (getGitHubUsername(author) ?? author).trim().replace(/^@+/, "")
+  const firstAlphaNumeric = normalized.match(/[A-Za-z0-9]/)
+
+  return firstAlphaNumeric ? firstAlphaNumeric[0].toUpperCase() : "?"
 }
 
 export default ((opts?: Partial<ContentMetaOptions>) => {
@@ -53,31 +56,17 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
 
         segments.push(
           <span class="meta-authors-with-avatar">
-            {githubUsername ? (
-              <>
-                <img
-                  class="meta-author-avatar"
-                  src={`https://github.com/${githubUsername}.png?size=40`}
-                  alt=""
-                  aria-hidden="true"
-                  loading="lazy"
-                  decoding="async"
-                  onError={(event) => {
-                    const image = event.currentTarget as HTMLImageElement
-                    image.style.display = "none"
-                    const fallback = image.nextElementSibling as HTMLElement | null
-                    fallback?.classList.add("is-visible")
-                  }}
-                />
-                <span class="meta-author-avatar-fallback" aria-hidden="true">
-                  {getInitial(primaryAuthor)}
-                </span>
-              </>
-            ) : (
-              <span class="meta-author-avatar-fallback" aria-hidden="true">
-                {getInitial(primaryAuthor)}
-              </span>
-            )}
+            <span
+              class="meta-author-avatar"
+              aria-hidden="true"
+              style={
+                githubUsername
+                  ? `--author-avatar-url: url('https://github.com/${githubUsername}.png?size=40')`
+                  : undefined
+              }
+            >
+              <span class="meta-author-avatar-fallback">{getInitial(primaryAuthor)}</span>
+            </span>
             <span>{authorLabel}</span>
           </span>,
         )

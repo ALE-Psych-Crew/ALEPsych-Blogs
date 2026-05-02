@@ -19,16 +19,19 @@
   gap: 0.45rem;
 }
 
-.meta-author-avatar,
-.meta-author-avatar-fallback {
+.meta-author-avatar {
   width: 1.15rem;
   height: 1.15rem;
   border-radius: 999px;
   flex-shrink: 0;
-}
-
-.meta-author-avatar {
-  object-fit: cover;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--light);
+  background-image: var(--author-avatar-url);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border: 1px solid var(--lightgray);
 }
 
@@ -41,13 +44,7 @@
   font-weight: 700;
   color: var(--dark);
   background: color-mix(in srgb, var(--secondary) 24%, var(--light) 76%);
-  border: 1px solid var(--lightgray);
-}
-
-.meta-author-avatar + .meta-author-avatar-fallback {
-  display: none;
-}
-
-.meta-author-avatar + .meta-author-avatar-fallback.is-visible {
-  display: inline-flex;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
 }
