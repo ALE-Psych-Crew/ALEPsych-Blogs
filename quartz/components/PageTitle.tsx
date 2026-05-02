@@ -8,7 +8,15 @@ const PageTitle: QuartzComponent = ({ fileData, cfg, displayClass }: QuartzCompo
   const baseDir = pathToRoot(fileData.slug!)
   return (
     <h2 class={classNames(displayClass, "page-title")}>
-      <a href={baseDir}>{title}</a>
+      <a href={baseDir} class="page-title-link" aria-label={title}>
+        <img
+          src={`${baseDir}/static/ale-psych-dev-blog-logo.png`}
+          alt="ALE Psych Dev Blog"
+          class="page-title-logo"
+          loading="eager"
+          decoding="async"
+        />
+      </a>
     </h2>
   )
 }
@@ -18,6 +26,17 @@ PageTitle.css = `
   font-size: 1.75rem;
   margin: 0;
   font-family: var(--titleFont);
+}
+
+.page-title-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.page-title-logo {
+  width: clamp(11rem, 15vw, 14rem);
+  height: auto;
+  display: block;
 }
 `
 
