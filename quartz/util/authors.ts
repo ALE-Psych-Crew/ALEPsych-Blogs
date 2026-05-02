@@ -1,0 +1,49 @@
+import { QuartzPluginData } from "../plugins/vfile"
+
+function normalizeAuthorValue(value: unknown): string[] {
+  if (typeof value === "string") {
+    return value
+      .split(",")
+      .map((author) => author.trim())
+      .filter((author) => author.length > 0)
+  }
+
+  if (Array.isArray(value)) {
+    return value
+      .flatMap((author) => (typeof author === "string" ? author.split(",") : []))
+      .map((author) => author.trim())
+      .filter((author) => author.length > 0)
+  }
+
+  return []
+}
+
+export function getAuthors(fileData: QuartzPluginData): string[] {
+  const frontmatter = fileData.frontmatter
+  if (!frontmatter || typeof frontmatter !== "object") {
+    return []
+  }
+
+  const authorCandidates = [
+    (frontmatter as Record<string, unknown>).author,
+    (frontmatter as Record<string, unknown>).authors,
+  ]
+
+  for (const candidate of authorCandidates) {
+    const parsedAuthors = normalizeAuthorValue(candidate)
+    if (parsedAuthors.length > 0) {
+      return parsedAuthors
+    }
+  }
+
+  return []
+}
+
+export function formatAuthorsLabel(authors: string[], locale: string): string {
+  if (authors.length === 0) {
+    return ""
+  }
+
+  const prefix = locale.startsWith("es") ? "Por" : "By"
+  return `${prefix} ${authors.join(", ")}`
+}

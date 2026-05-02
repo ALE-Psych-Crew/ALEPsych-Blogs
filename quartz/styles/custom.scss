@@ -1,3 +1,32 @@
 @use "./base.scss";
 
 // put your custom CSS here!
+
+:root[saved-theme="dark"] body {
+  background:
+    radial-gradient(circle at 10% -8%, rgba(161, 73, 255, 0.22), transparent 42%),
+    radial-gradient(circle at 92% 4%, rgba(112, 38, 196, 0.3), transparent 35%),
+    linear-gradient(180deg, #120c2a 0%, #0d0820 55%, #0a0618 100%);
+}
+
+:root[saved-theme="light"] body {
+  background:
+    radial-gradient(circle at 0% -20%, rgba(161, 73, 255, 0.08), transparent 44%),
+    radial-gradient(circle at 100% 0%, rgba(183, 148, 244, 0.15), transparent 30%), #f7f3ff;
+}
+
+.page-header h1 {
+  letter-spacing: 0.01em;
+}
+
+.dev-blog-notice {
+  margin: 1rem 0 1.5rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--secondary) 35%, transparent);
+  background: color-mix(in srgb, var(--highlight) 85%, transparent);
+}
+
+.dev-blog-notice p {
+  margin: 0;
+}

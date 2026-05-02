@@ -5,6 +5,7 @@ import { classNames } from "../util/lang"
 import { i18n } from "../i18n"
 import { JSX } from "preact"
 import style from "./styles/contentMeta.scss"
+import { formatAuthorsLabel, getAuthors } from "../util/authors"
 
 interface ContentMetaOptions {
   /**
@@ -31,6 +32,11 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
 
       if (fileData.dates) {
         segments.push(<Date date={getDate(cfg, fileData)!} locale={cfg.locale} />)
+      }
+
+      const authors = getAuthors(fileData)
+      if (authors.length > 0) {
+        segments.push(<span>{formatAuthorsLabel(authors, cfg.locale)}</span>)
       }
 
       // Display reading time if enabled

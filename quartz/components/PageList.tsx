@@ -3,6 +3,7 @@ import { QuartzPluginData } from "../plugins/vfile"
 import { Date, getDate } from "./Date"
 import { QuartzComponent, QuartzComponentProps } from "./types"
 import { GlobalConfiguration } from "../cfg"
+import { formatAuthorsLabel, getAuthors } from "../util/authors"
 
 export type SortFn = (f1: QuartzPluginData, f2: QuartzPluginData) => number
 
@@ -69,12 +70,14 @@ export const PageList: QuartzComponent = ({ cfg, fileData, allFiles, limit, sort
       {list.map((page) => {
         const title = page.frontmatter?.title
         const tags = page.frontmatter?.tags ?? []
+        const authorsLabel = formatAuthorsLabel(getAuthors(page), cfg.locale)
 
         return (
           <li class="section-li">
             <div class="section">
               <p class="meta">
                 {page.dates && <Date date={getDate(cfg, page)!} locale={cfg.locale} />}
+                {authorsLabel && <span class="meta-authors">{authorsLabel}</span>}
               </p>
               <div class="desc">
                 <h3>
@@ -110,5 +113,16 @@ PageList.css = `
 
 .section > .tags {
   margin: 0;
+}
+
+.section .meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.section .meta .meta-authors {
+  font-size: 0.82rem;
+  opacity: 0.9;
 }
 `
